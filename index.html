@@ -136,10 +136,13 @@ nav .nav-links a:hover { color: var(--green-dark); }
 #map {
   height: 420px; width: 100%; max-width: 900px; margin: 30px auto 0;
   border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
-  border: 1px solid var(--green-light); background: #e8f5e9;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--muted); font-size: 15px;
+  border: 1px solid var(--green-light); 
 }
+#map-aviso {
+  max-width: 900px; margin: 12px auto 0; font-size: 13px;
+  color: var(--muted); text-align: left; padding: 0 4px;
+}
+  
 
 /* CTA */
 .cta {
@@ -170,13 +173,9 @@ nav .nav-links a:hover { color: var(--green-dark); }
   transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
 }
 .team-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(22,163,74,0.15); }
-.team-card .card-img {
-  width: 100%; height: 200px; object-fit: cover;
-  object-position: center; display: block;
-}
 .team-card .card-body { padding: 24px 22px 26px; }
 .team-card h3 { font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
-.team-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.team-card p { color: var(--muted); font-size: 14px; line-height: 1.6 }
 
 /* FOOTER */
 footer {
@@ -276,7 +275,8 @@ footer strong { color: var(--green); }
   <p class="section-label">Explora</p>
   <h2 class="section-title">Mapa interactivo</h2>
   <p class="section-sub">Haz clic en el mapa para reportar un peligro</p>
-  <div id="map">📍 Cargando mapa de Valladolid…</div>
+<div id="map"></div>
+  <p id="map-aviso">📍 Haz clic en cualquier punto del mapa para marcar un peligro. Los marcadores son solo visuales en esta versión de demostración.</p>
 </section>
 
 <!-- QUIÉNES SOMOS -->
@@ -317,9 +317,12 @@ footer strong { color: var(--green); }
 
 <!-- FOOTER -->
 <footer>
-<p>© 2026 <strong>Bike Pulse</strong></p>
+<p>© 2026 <strong>Bike Pulse</strong> - Valladolid</p>
 <footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
+// Animación de cards al hacer scroll
 const allCards = document.querySelectorAll(".card, .team-card");
 function mostrarCards() {
   allCards.forEach((card, i) => {
@@ -331,23 +334,63 @@ function mostrarCards() {
 window.addEventListener("scroll", mostrarCards);
 mostrarCards();
 
-function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 12,
-    center: { lat: 41.6523, lng: -4.7245 }
-  });
-  map.addListener('click', function(e) {
-    new google.maps.Marker({ position: e.latLng, map: map, title: "Peligro reportado" });
-  });
-  [
-    { lat: 41.6560, lng: -4.7238, titulo: "Bache reportado" },
-    { lat: 41.6485, lng: -4.7180, titulo: "Obra en curso" },
-    { lat: 41.6620, lng: -4.7300, titulo: "Suelo resbaladizo" }
-  ].forEach(p => new google.maps.Marker({ position: { lat: p.lat, lng: p.lng }, map, title: p.titulo }));
-}
+// Mapa con Leaflet (sin API key)
+var map = L.map('map').setView([41.6523, -4.7245], 11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Municipios del alfoz
+var municipios = [
+  { nombre: 'Valladolid',              coords: [41.6523, -4.7245], capital: true },
+  { nombre: 'Simancas',                coords: [41.5903, -4.8642] },
+  { nombre: 'Cistérniga',              coords: [41.6223, -4.6700] },
+  { nombre: 'Tudela de Duero',         coords: [41.5803, -4.5833] },
+  { nombre: 'Laguna de Duero',         coords: [41.5667, -4.7167] },
+  { nombre: 'Boecillo',                coords: [41.5330, -4.7254] },
+  { nombre: 'Arroyo de la Encomienda', coords: [41.6167, -4.7833] },
+  { nombre: 'Zaratán',                 coords: [41.6618, -4.7928] },
+  { nombre: 'Villanubla',              coords: [41.6993, -4.8393] },
+  { nombre: 'Fuensaldaña',             coords: [41.7083, -4.7583] },
+  { nombre: 'Mucientes',               coords: [41.7333, -4.8000] },
+  { nombre: 'Cigales',                 coords: [41.7667, -4.7167] },
+  { nombre: 'Cabezón de Pisuerga',     coords: [41.7167, -4.6833] },
+  { nombre: 'Santovenia de Pisuerga',  coords: [41.7000, -4.7167] },
+  { nombre: 'Renedo de Esgueva',       coords: [41.6500, -4.6333] },
+  { nombre: 'Valdestillas',            coords: [41.5500, -4.7833] },
+];
+
+municipios.forEach(function(m) {
+  L.circleMarker(m.coords, m.capital
+    ? { radius: 10, fillColor: '#16a34a', color: '#0f6e3a', weight: 2, fillOpacity: 0.9 }
+    : { radius: 7,  fillColor: '#22c55e', color: '#16a34a', weight: 1.5, fillOpacity: 0.85 }
+  )
+  .addTo(map)
+  .bindPopup('<strong>' + m.nombre + '</strong>' + (m.capital ? '<br><em>Capital</em>' : ''));
+});
+
+// Peligros de ejemplo
+var peligros = [
+  { coords: [41.6560, -4.7238], tipo: '🕳️ Bache reportado' },
+  { coords: [41.6485, -4.7180], tipo: '🚧 Obra en curso' },
+  { coords: [41.6620, -4.7300], tipo: '💧 Suelo resbaladizo' }
+];
+
+peligros.forEach(function(p) {
+  L.marker(p.coords).addTo(map).bindPopup('<strong>' + p.tipo + '</strong>');
+});
+
+// Clic para añadir marcador de peligro
+map.on('click', function(e) {
+  var popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent('<strong>⚠️ Peligro reportado</strong><br>Lat: ' + e.latlng.lat.toFixed(5) + '<br>Lng: ' + e.latlng.lng.toFixed(5))
+    .openOn(map);
+  L.marker(e.latlng).addTo(map).bindPopup('<strong>⚠️ Peligro reportado</strong>');
+});
 </script>
-<!-- Reemplaza TU_API_KEY con tu clave real de Google Maps -->
-<script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap" async defer></script>
 
 </body>
 </html>
+
