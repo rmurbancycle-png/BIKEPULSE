@@ -444,13 +444,6 @@ peligros.forEach(function(p) {
 });
 
 // Clic para añadir marcador de peligro
-var userCount = 0;
-var yellowIcon = L.divIcon({
-  className: '',
-  html: '<div style="width:14px;height:14px;border-radius:50%;background:#ef4444;border:2px solid #b91c1c;box-shadow:0 0 0 3px rgba(239,68,68,0.3)"></div>',
-  iconSize: [14, 14], iconAnchor: [7, 7]
-});
-
 map.on('click', function(e) {
   userCount++;
   document.getElementById('cnt-usuario').textContent = userCount;
