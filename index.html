@@ -332,7 +332,6 @@ footer strong { color: var(--green); }
   .stat { padding: 30px 20px; }
   nav .nav-links { display: none; }
   .section-title { font-size: 28px; }
-  .phone-frame { width: 280px; height: 280px; }
 }
 </style>
 </head>
@@ -410,13 +409,56 @@ footer strong { color: var(--green); }
 </section>
 
 <!-- MAPA -->
-<section id="mapa" class="mapa">
-  <p class="section-label">Explora</p>
-  <h2 class="section-title">Mapa interactivo</h2>
-  <p class="section-sub">Haz clic en el mapa para reportar un peligro</p>
-<div id="map"></div>
-  <p id="map-aviso">📍 Haz clic en cualquier punto del mapa para marcar un peligro. Los marcadores son solo visuales en esta versión de demostración.</p>
+<section id="mapa" class="mapa" style="padding: 90px 8%; text-align: center; background: var(--dark); color: white;">
+  <p class="section-label" style="color: var(--green);">Explora</p>
+  <h2 class="section-title" style="color: white;">Mapa interactivo</h2>
+  <p class="section-sub" style="color: rgba(255,255,255,0.55); margin-bottom: 36px;">Visualiza peligros reportados en Valladolid y su alfoz</p>
+  <button onclick="abrirMapa()" style="
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green); color: white;
+    padding: 16px 36px; border-radius: 12px; border: none;
+    font-weight: 700; font-family: 'Syne', sans-serif; font-size: 16px;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(34,197,94,0.3);"
+    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 32px rgba(34,197,94,0.4)'"
+    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(34,197,94,0.3)'">
+    🗺️ Ver mapa
+  </button>
 </section>
+
+<!-- MODAL MAPA -->
+<div class="modal-overlay" id="mapaModal" onclick="cerrarMapaSiFondo(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>🗺️ Mapa <span>Bike Pulse</span></h3>
+      <button class="modal-close" onclick="cerrarMapa()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-sidebar">
+        <div>
+          <h4>Leyenda</h4>
+          <div class="legend-item"><span class="legend-dot capital"></span> Valladolid (capital)</div>
+          <div class="legend-item"><span class="legend-dot municipio"></span> Municipios del alfoz</div>
+          <div class="legend-item"><span class="legend-dot peligro"></span> Peligro reportado</div>
+          <div class="legend-item"><span class="legend-dot usuario"></span> Tu reporte</div>
+        </div>
+        <div>
+          <h4>Estadísticas</h4>
+          <div class="map-counter">
+            <div class="counter-item"><span>Municipios</span><span>16</span></div>
+            <div class="counter-item"><span>Peligros activos</span><span>3</span></div>
+            <div class="counter-item"><span>Tus reportes</span><span id="cnt-usuario">0</span></div>
+          </div>
+        </div>
+        <div class="sidebar-tip">
+          <strong>💡 ¿Cómo reportar?</strong>
+          Haz clic en cualquier punto del mapa para marcar un peligro.
+        </div>
+      </div>
+      <div id="modal-map"></div>
+    </div>
+  </div>
+</div>
 
 <!-- QUIÉNES SOMOS -->
 <section id="quienessomos" class="quienessomos">
