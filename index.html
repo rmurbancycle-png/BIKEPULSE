@@ -348,7 +348,6 @@ footer strong { color: var(--green); }
     <a href="#features">Funciones</a>
     <a href="#mapa">Mapa</a>
     <a href="#quienessomos">Quiénes somos</a>
-    <a class="nav-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSeW_XeskioccoIyqXDhyP-51GU5ehOler4V_dwZAG0swQ_oAA/viewform">Únete</a>
   </div>
 </nav>
 
@@ -426,40 +425,43 @@ footer strong { color: var(--green); }
   </button>
 </section>
 
-<!-- MODAL MAPA -->
-<div class="modal-overlay" id="mapaModal" onclick="cerrarMapaSiFondo(event)">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>🗺️ Mapa <span>Bike Pulse</span></h3>
-      <button class="modal-close" onclick="cerrarMapa()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-sidebar">
-        <div>
-          <h4>Leyenda</h4>
-          <div class="legend-item"><span class="legend-dot capital"></span> Valladolid (capital)</div>
-          <div class="legend-item"><span class="legend-dot municipio"></span> Municipios del alfoz</div>
-          <div class="legend-item"><span class="legend-dot peligro"></span> Peligro reportado</div>
-          <div class="legend-item"><span class="legend-dot usuario"></span> Tu reporte</div>
-        </div>
-        <div>
-          <h4>Estadísticas</h4>
-          <div class="map-counter">
-            <div class="counter-item"><span>Municipios</span><span>16</span></div>
-            <div class="counter-item"><span>Peligros activos</span><span>3</span></div>
-            <div class="counter-item"><span>Tus reportes</span><span id="cnt-usuario">0</span></div>
-          </div>
-        </div>
-        <div class="sidebar-tip">
-          <strong>💡 ¿Cómo reportar?</strong>
-          Haz clic en cualquier punto del mapa para marcar un peligro.
+<!-- MAPA -->
+<section id="mapa" class="mapa">
+  <p class="section-label">Explora</p>
+  <h2 class="section-title">Mapa interactivo</h2>
+  <p class="section-sub">Haz clic en el mapa para reportar un peligro</p>
+
+  <div class="map-wrapper">
+    <!-- Sidebar -->
+    <div class="map-sidebar">
+      <div>
+        <h4>Leyenda</h4>
+        <div class="legend-item"><span class="legend-dot capital"></span> Valladolid (capital)</div>
+        <div class="legend-item"><span class="legend-dot municipio"></span> Municipios del alfoz</div>
+        <div class="legend-item"><span class="legend-dot peligro"></span> Peligro reportado</div>
+        <div class="legend-item"><span class="legend-dot usuario"></span> Tu reporte</div>
+      </div>
+
+      <div>
+        <h4>Estadísticas</h4>
+        <div class="map-counter">
+          <div class="counter-item"><span>Municipios</span><span>16</span></div>
+          <div class="counter-item"><span>Peligros activos</span><span id="cnt-peligros">3</span></div>
+          <div class="counter-item"><span>Tus reportes</span><span id="cnt-usuario">0</span></div>
         </div>
       </div>
-      <div id="modal-map"></div>
-    </div>
-  </div>
-</div>
 
+      <div class="sidebar-tip">
+        <strong>💡 ¿Cómo reportar?</strong>
+        Haz clic en cualquier punto del mapa para marcar un peligro. Los reportes son solo visuales en esta demo.
+      </div>
+    </div>
+
+    <!-- Mapa -->
+    <div id="map"></div>
+  </div>
+</section>
+  
 <!-- QUIÉNES SOMOS -->
 <section id="quienessomos" class="quienessomos">
   <p class="section-label">El equipo</p>
@@ -515,90 +517,61 @@ function mostrarCards() {
 window.addEventListener("scroll", mostrarCards);
 mostrarCards();
 
-// Modal del mapa
-var mapaInicializado = false;
-var modalMap;
-var userCount = 0;
+// Mapa con Leaflet (sin API key)
+var map = L.map('map').setView([41.6523, -4.7245], 11);
 
-function abrirMapa() {
-  document.getElementById('mapaModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  if (!mapaInicializado) {
-    setTimeout(iniciarMapa, 80);
-    mapaInicializado = true;
-  } else {
-    modalMap.invalidateSize();
-  }
-}
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-function cerrarMapa() {
-  document.getElementById('mapaModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
+// Municipios del alfoz
+var municipios = [
+  { nombre: 'Valladolid',              coords: [41.6523, -4.7245], capital: true },
+  { nombre: 'Simancas',                coords: [41.5903, -4.8642] },
+  { nombre: 'Cistérniga',              coords: [41.6223, -4.6700] },
+  { nombre: 'Tudela de Duero',         coords: [41.5803, -4.5833] },
+  { nombre: 'Laguna de Duero',         coords: [41.5667, -4.7167] },
+  { nombre: 'Boecillo',                coords: [41.5330, -4.7254] },
+  { nombre: 'Arroyo de la Encomienda', coords: [41.6167, -4.7833] },
+  { nombre: 'Zaratán',                 coords: [41.6618, -4.7928] },
+  { nombre: 'Villanubla',              coords: [41.6993, -4.8393] },
+  { nombre: 'Fuensaldaña',             coords: [41.7083, -4.7583] },
+  { nombre: 'Mucientes',               coords: [41.7333, -4.8000] },
+  { nombre: 'Cigales',                 coords: [41.7667, -4.7167] },
+  { nombre: 'Cabezón de Pisuerga',     coords: [41.7167, -4.6833] },
+  { nombre: 'Santovenia de Pisuerga',  coords: [41.7000, -4.7167] },
+  { nombre: 'Renedo de Esgueva',       coords: [41.6500, -4.6333] },
+  { nombre: 'Valdestillas',            coords: [41.5500, -4.7833] },
+];
 
-function cerrarMapaSiFondo(e) {
-  if (e.target === document.getElementById('mapaModal')) cerrarMapa();
-}
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') cerrarMapa();
+municipios.forEach(function(m) {
+  L.circleMarker(m.coords, m.capital
+    ? { radius: 10, fillColor: '#16a34a', color: '#0f6e3a', weight: 2, fillOpacity: 0.9 }
+    : { radius: 7,  fillColor: '#22c55e', color: '#16a34a', weight: 1.5, fillOpacity: 0.85 }
+  )
+  .addTo(map)
+  .bindPopup('<strong>' + m.nombre + '</strong>' + (m.capital ? '<br><em>Capital</em>' : ''));
 });
 
-function iniciarMapa() {
-  modalMap = L.map('modal-map').setView([41.6523, -4.7245], 11);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(modalMap);
+// Peligros de ejemplo
+var peligros = [
+  { coords: [41.6560, -4.7238], tipo: '🕳️ Bache reportado' },
+  { coords: [41.6485, -4.7180], tipo: '🚧 Obra en curso' },
+  { coords: [41.6620, -4.7300], tipo: '💧 Suelo resbaladizo' }
+];
 
-  var municipios = [
-    { nombre: 'Valladolid',              coords: [41.6523, -4.7245], capital: true },
-    { nombre: 'Simancas',                coords: [41.5903, -4.8642] },
-    { nombre: 'Cistérniga',              coords: [41.6223, -4.6700] },
-    { nombre: 'Tudela de Duero',         coords: [41.5803, -4.5833] },
-    { nombre: 'Laguna de Duero',         coords: [41.5667, -4.7167] },
-    { nombre: 'Boecillo',                coords: [41.5330, -4.7254] },
-    { nombre: 'Arroyo de la Encomienda', coords: [41.6167, -4.7833] },
-    { nombre: 'Zaratán',                 coords: [41.6618, -4.7928] },
-    { nombre: 'Villanubla',              coords: [41.6993, -4.8393] },
-    { nombre: 'Fuensaldaña',             coords: [41.7083, -4.7583] },
-    { nombre: 'Mucientes',               coords: [41.7333, -4.8000] },
-    { nombre: 'Cigales',                 coords: [41.7667, -4.7167] },
-    { nombre: 'Cabezón de Pisuerga',     coords: [41.7167, -4.6833] },
-    { nombre: 'Santovenia de Pisuerga',  coords: [41.7000, -4.7167] },
-    { nombre: 'Renedo de Esgueva',       coords: [41.6500, -4.6333] },
-    { nombre: 'Valdestillas',            coords: [41.5500, -4.7833] },
-  ];
-  municipios.forEach(function(m) {
-    L.circleMarker(m.coords, m.capital
-      ? { radius: 10, fillColor: '#16a34a', color: '#0f6e3a', weight: 2, fillOpacity: 0.9 }
-      : { radius: 7,  fillColor: '#22c55e', color: '#16a34a', weight: 1.5, fillOpacity: 0.85 }
-    ).addTo(modalMap)
-     .bindPopup('<strong>' + m.nombre + '</strong>' + (m.capital ? '<br><em>Capital</em>' : ''));
-  });
+peligros.forEach(function(p) {
+  L.marker(p.coords).addTo(map).bindPopup('<strong>' + p.tipo + '</strong>');
+});
 
-  var peligros = [
-    { coords: [41.6560, -4.7238], tipo: '🕳️ Bache reportado' },
-    { coords: [41.6485, -4.7180], tipo: '🚧 Obra en curso' },
-    { coords: [41.6620, -4.7300], tipo: '💧 Suelo resbaladizo' }
-  ];
-  peligros.forEach(function(p) {
-    L.marker(p.coords).addTo(modalMap).bindPopup('<strong>' + p.tipo + '</strong>');
-  });
-
-  var redIcon = L.divIcon({
-    className: '',
-    html: '<div style="width:14px;height:14px;border-radius:50%;background:#ef4444;border:2px solid #b91c1c;box-shadow:0 0 0 4px rgba(239,68,68,0.3)"></div>',
-    iconSize: [14, 14], iconAnchor: [7, 7]
-  });
-  modalMap.on('click', function(e) {
-    userCount++;
-    document.getElementById('cnt-usuario').textContent = userCount;
-    L.marker(e.latlng, { icon: redIcon }).addTo(modalMap)
-      .bindPopup('<strong>⚠️ Tu reporte</strong><br>' + e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5))
-      .openPopup();
-  });
-
-  modalMap.invalidateSize();
+// Clic para añadir marcador de peligro
+map.on('click', function(e) {
+  var popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent('<strong>⚠️ Peligro reportado</strong><br>Lat: ' + e.latlng.lat.toFixed(5) + '<br>Lng: ' + e.latlng.lng.toFixed(5))
+    .openOn(map);
+  L.marker(e.latlng).addTo(map).bindPopup('<strong>⚠️ Peligro reportado</strong>');
+});
 </script>
 
 </body>
