@@ -145,7 +145,6 @@ nav .nav-links a:hover { color: var(--green-dark); }
   display: flex; align-items: stretch; max-width: 1100px;
   margin: 0 auto; gap: 0; border-radius: 20px 20px 0 0;
   overflow: hidden; box-shadow: 0 -8px 60px rgba(0,0,0,0.4);
-  height: 520px;
 }
 
 .map-sidebar {
@@ -239,6 +238,83 @@ nav .nav-links a:hover { color: var(--green-dark); }
 .team-card .card-body { padding: 24px 22px 26px; }
 .team-card h3 { font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
 .team-card p { color: var(--muted); font-size: 14px; line-height: 1.6 }
+  
+/* MODAL MAPA */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--dark); border-radius: 20px; width: 100%;
+  max-width: 1100px; height: 90vh; max-height: 680px;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.modal-header h3 {
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
+  color: white; display: flex; align-items: center; gap: 10px;
+}
+.modal-header h3 span { color: var(--green); }
+.modal-close {
+  background: rgba(255,255,255,0.08); border: none; cursor: pointer;
+  width: 36px; height: 36px; border-radius: 50%; font-size: 18px;
+  color: rgba(255,255,255,0.7); display: flex; align-items: center;
+  justify-content: center; transition: background 0.2s, color 0.2s;
+}
+.modal-close:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
+.modal-body { display: flex; flex: 1; overflow: hidden; }
+.modal-sidebar {
+  width: 240px; flex-shrink: 0; background: #0f1f14;
+  padding: 24px 18px; display: flex; flex-direction: column;
+  gap: 22px; border-right: 1px solid rgba(255,255,255,0.07); overflow-y: auto;
+}
+.modal-sidebar h4 {
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 4px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: rgba(255,255,255,0.7); padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.legend-item:last-child { border-bottom: none; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.legend-dot.capital   { background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.3); }
+.legend-dot.municipio { background: #22c55e; }
+.legend-dot.peligro   { background: #3b82f6; }
+.legend-dot.usuario   { background: #ef4444; }
+.map-counter { display: flex; flex-direction: column; gap: 10px; }
+.counter-item {
+  background: rgba(255,255,255,0.04); border-radius: 10px;
+  padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
+}
+.counter-item span:first-child { font-size: 12px; color: rgba(255,255,255,0.5); }
+.counter-item span:last-child  { font-size: 20px; font-weight: 800; font-family: 'Syne', sans-serif; color: var(--green); }
+.sidebar-tip {
+  margin-top: auto; background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.2); border-radius: 10px;
+  padding: 12px; font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6;
+}
+.sidebar-tip strong { color: var(--green); display: block; margin-bottom: 4px; font-size: 13px; }
+#modal-map { flex: 1; height: 100%; min-height: 300px; }
+@media (max-width: 700px) {
+  .modal-body { flex-direction: column; }
+  .modal-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; gap: 10px; padding: 14px; }
+  #modal-map { height: 320px; }
+}
+
 
 /* FOOTER */
 footer {
