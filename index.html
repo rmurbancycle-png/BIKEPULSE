@@ -418,6 +418,7 @@ footer strong { color: var(--green); }
     <div class="weather-alerts" id="w-alerts"></div>
   </div>
 </div>
+<!-- HERO -->  
 <section class="hero">
   <div class="hero-text">
     <div class="hero-badge">🚴 Únete al proyecto</div>
@@ -485,26 +486,16 @@ footer strong { color: var(--green); }
     Responder formulario →
   </a>
 </section>
-  <!-- MAPA -->
-<section id="mapa" class="mapa" style="padding: 90px 8%; text-align: center; background: var(--dark); color: white;">
-  <p class="section-label" style="color: var(--green);">Explora</p>
-  <h2 class="section-title" style="color: white;">Mapa interactivo</h2>
-  <p class="section-sub" style="color: rgba(255,255,255,0.55); margin-bottom: 36px;">Visualiza peligros reportados en Valladolid y su alfoz</p>
-  <button onclick="abrirMapa()" style="
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--green); color: white;
-    padding: 16px 36px; border-radius: 12px; border: none;
-    font-weight: 700; font-family: 'Syne', sans-serif; font-size: 16px;
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 24px rgba(34,197,94,0.3);"
-    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 32px rgba(34,197,94,0.4)'"
-    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(34,197,94,0.3)'">
-    🗺️ Ver mapa
-  </button>
+<!-- SECCIÓN MAPA -->
+<section id="mapa" class="mapa-seccion">
+  <p class="section-label">Explora</p>
+  <h2 class="section-title">Mapa interactivo</h2>
+  <p class="section-sub">Visualiza peligros reportados en Valladolid y su alfoz</p>
+  <button class="btn-mapa" onclick="abrirMapa()">🗺️ Ver mapa</button>
 </section>
 
 <!-- MODAL MAPA -->
-<div class="modal-overlay" id="mapaModal" onclick="cerrarMapaSiFondo(event)">
+<div class="modal-overlay" id="mapaModal" onclick="cerrarSiFondo(event)">
   <div class="modal-box">
     <div class="modal-header">
       <h3>🗺️ Mapa <span>Bike Pulse</span></h3>
@@ -512,34 +503,43 @@ footer strong { color: var(--green); }
     </div>
     <div class="modal-body">
       <div class="modal-sidebar">
+
         <div>
           <h4>Leyenda</h4>
           <div class="legend-item"><span class="legend-dot capital"></span> Valladolid (capital)</div>
           <div class="legend-item"><span class="legend-dot municipio"></span> Municipios del alfoz</div>
           <div class="legend-item"><span class="legend-dot peligro"></span> Peligro reportado</div>
+          <div class="legend-item"><span class="legend-dot clima"></span> Alerta meteorológica</div>
           <div class="legend-item"><span class="legend-dot usuario"></span> Tu reporte</div>
         </div>
+
+        <div>
+          <h4>⛅ Tiempo ahora</h4>
+          <div class="weather-widget">
+            <div class="ww-top">
+              <span style="font-size:11px;color:rgba(255,255,255,0.4)">Valladolid</span>
+              <span class="ww-temp" id="mw-temp">–</span>
+            </div>
+            <div class="ww-desc" id="mw-desc">Cargando…</div>
+            <div class="ww-alerts" id="mw-alerts"></div>
+          </div>
+        </div>
+
         <div>
           <h4>Estadísticas</h4>
           <div class="map-counter">
             <div class="counter-item"><span>Municipios</span><span>16</span></div>
             <div class="counter-item"><span>Peligros activos</span><span>3</span></div>
+            <div class="counter-item"><span>Alertas clima</span><span id="cnt-clima">0</span></div>
             <div class="counter-item"><span>Tus reportes</span><span id="cnt-usuario">0</span></div>
           </div>
-        </div>
-        <div class="weather-widget" id="modal-weather">
-          <div class="ww-top">
-            <span class="ww-label">⛅ Tiempo ahora</span>
-            <span class="ww-temp" id="mw-temp">–</span>
-          </div>
-          <div class="ww-desc" id="mw-desc">Cargando…</div>
-          <div class="ww-alerts" id="mw-alerts"></div>
         </div>
 
         <div class="sidebar-tip">
           <strong>💡 ¿Cómo reportar?</strong>
           Haz clic en cualquier punto del mapa para marcar un peligro.
         </div>
+
       </div>
       <div id="modal-map"></div>
     </div>
@@ -589,54 +589,47 @@ footer strong { color: var(--green); }
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// Animación de cards al hacer scroll
+/* ANIMACIÓN CARDS */
 const allCards = document.querySelectorAll(".card, .team-card");
 function mostrarCards() {
   allCards.forEach((card, i) => {
-    if (card.getBoundingClientRect().top < window.innerHeight - 60) {
+    if (card.getBoundingClientRect().top < window.innerHeight - 60)
       setTimeout(() => card.classList.add("show"), i * 80);
-    }
   });
 }
 window.addEventListener("scroll", mostrarCards);
 mostrarCards();
 
-// Modal del mapa
-var mapaInicializado = false;
-var modalMap;
-var userCount = 0;
+/* MODAL */
+var mapaListo = false, modalMap, userCount = 0, climaYaAnadido = false;
 
 function abrirMapa() {
   document.getElementById('mapaModal').classList.add('open');
   document.body.style.overflow = 'hidden';
-  if (!mapaInicializado) {
-    setTimeout(iniciarMapa, 80);
-    mapaInicializado = true;
+  if (!mapaListo) {
+    mapaListo = true;
+    setTimeout(iniciarMapa, 300);
   } else {
-    modalMap.invalidateSize();
+    setTimeout(() => modalMap.invalidateSize(), 50);
   }
 }
-
 function cerrarMapa() {
   document.getElementById('mapaModal').classList.remove('open');
   document.body.style.overflow = '';
 }
-
-function cerrarMapaSiFondo(e) {
+function cerrarSiFondo(e) {
   if (e.target === document.getElementById('mapaModal')) cerrarMapa();
 }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarMapa(); });
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') cerrarMapa();
-});
-
+/* MAPA LEAFLET */
 function iniciarMapa() {
   modalMap = L.map('modal-map').setView([41.6523, -4.7245], 11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(modalMap);
 
-  var municipios = [
+  [
     { nombre: 'Valladolid',              coords: [41.6523, -4.7245], capital: true },
     { nombre: 'Simancas',                coords: [41.5903, -4.8642] },
     { nombre: 'Cistérniga',              coords: [41.6223, -4.6700] },
@@ -653,8 +646,7 @@ function iniciarMapa() {
     { nombre: 'Santovenia de Pisuerga',  coords: [41.7000, -4.7167] },
     { nombre: 'Renedo de Esgueva',       coords: [41.6500, -4.6333] },
     { nombre: 'Valdestillas',            coords: [41.5500, -4.7833] },
-  ];
-  municipios.forEach(function(m) {
+  ].forEach(m => {
     L.circleMarker(m.coords, m.capital
       ? { radius: 10, fillColor: '#16a34a', color: '#0f6e3a', weight: 2, fillOpacity: 0.9 }
       : { radius: 7,  fillColor: '#22c55e', color: '#16a34a', weight: 1.5, fillOpacity: 0.85 }
@@ -662,21 +654,18 @@ function iniciarMapa() {
      .bindPopup('<strong>' + m.nombre + '</strong>' + (m.capital ? '<br><em>Capital</em>' : ''));
   });
 
-  var peligros = [
+  [
     { coords: [41.6560, -4.7238], tipo: '🕳️ Bache reportado' },
     { coords: [41.6485, -4.7180], tipo: '🚧 Obra en curso' },
-    { coords: [41.6620, -4.7300], tipo: '💧 Suelo resbaladizo' }
-  ];
-  peligros.forEach(function(p) {
-    L.marker(p.coords).addTo(modalMap).bindPopup('<strong>' + p.tipo + '</strong>');
-  });
+    { coords: [41.6620, -4.7300], tipo: '💧 Suelo resbaladizo' },
+  ].forEach(p => L.marker(p.coords).addTo(modalMap).bindPopup('<strong>' + p.tipo + '</strong>'));
 
-  var redIcon = L.divIcon({
+  const redIcon = L.divIcon({
     className: '',
     html: '<div style="width:14px;height:14px;border-radius:50%;background:#ef4444;border:2px solid #b91c1c;box-shadow:0 0 0 4px rgba(239,68,68,0.3)"></div>',
-    iconSize: [14, 14], iconAnchor: [7, 7]
+    iconSize: [14,14], iconAnchor: [7,7]
   });
-  modalMap.on('click', function(e) {
+  modalMap.on('click', e => {
     userCount++;
     document.getElementById('cnt-usuario').textContent = userCount;
     L.marker(e.latlng, { icon: redIcon }).addTo(modalMap)
@@ -685,27 +674,12 @@ function iniciarMapa() {
   });
 
   modalMap.invalidateSize();
+  if (window._alertasClima) añadirMarcadoresClima(window._alertasClima);
+}
 
-const WMO_ICONS = {
-  0:'☀️', 1:'🌤️', 2:'⛅', 3:'☁️',
-  45:'🌫️', 48:'🌫️',
-  51:'🌦️', 53:'🌦️', 55:'🌧️',
-  61:'🌧️', 63:'🌧️', 65:'🌧️',
-  71:'🌨️', 73:'🌨️', 75:'❄️',
-  77:'🌨️', 80:'🌦️', 81:'🌧️', 82:'⛈️',
-  85:'🌨️', 86:'❄️',
-  95:'⛈️', 96:'⛈️', 99:'⛈️'
-};
-const WMO_DESC = {
-  0:'Despejado', 1:'Mayormente despejado', 2:'Parcialmente nublado', 3:'Nublado',
-  45:'Niebla', 48:'Niebla con escarcha',
-  51:'Llovizna ligera', 53:'Llovizna', 55:'Llovizna intensa',
-  61:'Lluvia ligera', 63:'Lluvia moderada', 65:'Lluvia intensa',
-  71:'Nevada ligera', 73:'Nevada moderada', 75:'Nevada intensa',
-  77:'Granizo', 80:'Chubascos ligeros', 81:'Chubascos', 82:'Chubascos intensos',
-  85:'Chubascos de nieve', 86:'Chubascos de nieve intensos',
-  95:'Tormenta', 96:'Tormenta con granizo', 99:'Tormenta intensa'
-};
+/* TIEMPO METEOROLÓGICO — Open-Meteo, sin API key */
+const WMO_ICON = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',77:'🌨️',80:'🌦️',81:'🌧️',82:'⛈️',85:'🌨️',86:'❄️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WMO_DESC = {0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Niebla',48:'Niebla con escarcha',51:'Llovizna ligera',53:'Llovizna',55:'Llovizna intensa',61:'Lluvia ligera',63:'Lluvia moderada',65:'Lluvia intensa',71:'Nevada ligera',73:'Nevada moderada',75:'Nevada intensa',77:'Granizo',80:'Chubascos ligeros',81:'Chubascos',82:'Chubascos intensos',85:'Chubascos de nieve',86:'Chubascos de nieve intensos',95:'Tormenta',96:'Tormenta con granizo',99:'Tormenta intensa'};
 
 function calcularAlertas(data) {
   const alerts = [];
@@ -713,107 +687,71 @@ function calcularAlertas(data) {
   const temp = data.current.temperature_2m;
   const wind = data.current.wind_speed_10m;
   const precip = data.current.precipitation;
-
-  // Lluvia → suelo deslizante
-  const esLluvia = [51,53,55,61,63,65,80,81,82].includes(wc) || precip > 0.5;
-  if (esLluvia) alerts.push({ clase: 'lluvia', texto: '💧 Suelo deslizante por lluvia' });
-
-  // Nieve
-  const esNieve = [71,73,75,77,85,86].includes(wc);
-  if (esNieve) alerts.push({ clase: 'nevada', texto: '❄️ Nevada — visibilidad reducida' });
-
-  // Hielo (temperatura bajo 2°C)
-  if (temp <= 2) alerts.push({ clase: 'hielo', texto: '🧊 Peligro de hielo en el firme' });
-
-  // Viento fuerte (> 40 km/h)
-  if (wind > 40) alerts.push({ clase: 'viento', texto: '💨 Viento fuerte — precaución' });
-
+  if ([51,53,55,61,63,65,80,81,82].includes(wc) || precip > 0.5)
+    alerts.push({ clase: 'lluvia', texto: '💧 Suelo deslizante por lluvia' });
+  if ([71,73,75,77,85,86].includes(wc))
+    alerts.push({ clase: 'nevada', texto: '❄️ Nevada — visibilidad reducida' });
+  if (temp <= 2)
+    alerts.push({ clase: 'hielo', texto: '🧊 Peligro de hielo en el firme' });
+  if (wind > 40)
+    alerts.push({ clase: 'viento', texto: '💨 Viento fuerte — precaución' });
   return alerts;
+}
+
+function añadirMarcadoresClima(alerts) {
+  if (climaYaAnadido || !alerts.length || !modalMap) return;
+  climaYaAnadido = true;
+  const puntos = [[41.6523,-4.7245],[41.6560,-4.7100],[41.6400,-4.7300],[41.6650,-4.7400],[41.6300,-4.7100]];
+  const climaIcon = L.divIcon({
+    className: '',
+    html: '<div style="width:15px;height:15px;border-radius:50%;background:#f59e0b;border:2px solid #d97706;box-shadow:0 0 0 4px rgba(245,158,11,0.3)"></div>',
+    iconSize: [15,15], iconAnchor: [7,7]
+  });
+  alerts.forEach((a, i) => {
+    const p = puntos[i % puntos.length];
+    L.marker([p[0]+(Math.random()-.5)*0.012, p[1]+(Math.random()-.5)*0.012], { icon: climaIcon })
+      .addTo(modalMap)
+      .bindPopup('<strong>' + a.texto + '</strong><br><em>Alerta automática meteorológica</em>');
+  });
+  document.getElementById('cnt-clima').textContent = alerts.length;
 }
 
 async function cargarTiempo() {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${WX_LAT}&longitude=${WX_LNG}` +
-      `&current=temperature_2m,weather_code,wind_speed_10m,precipitation` +
-      `&wind_speed_unit=kmh&timezone=Europe%2FMadrid`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    const temp  = Math.round(data.current.temperature_2m);
-    const wc    = data.current.weather_code;
-    const icon  = WMO_ICONS[wc] || '🌡️';
-    const desc  = WMO_DESC[wc]  || 'Tiempo variable';
-    const wind  = Math.round(data.current.wind_speed_10m);
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=41.6523&longitude=-4.7245' +
+      '&current=temperature_2m,weather_code,wind_speed_10m,precipitation&wind_speed_unit=kmh&timezone=Europe%2FMadrid';
+    const data = await (await fetch(url)).json();
+    const temp   = Math.round(data.current.temperature_2m);
+    const wc     = data.current.weather_code;
+    const wind   = Math.round(data.current.wind_speed_10m);
+    const icon   = WMO_ICON[wc] || '🌡️';
+    const desc   = WMO_DESC[wc] || 'Tiempo variable';
     const alerts = calcularAlertas(data);
 
-    // Barra superior
-    const bar = document.getElementById('weatherBar');
-    bar.classList.add('visible');
-    document.getElementById('w-icon').textContent  = icon;
-    document.getElementById('w-desc').textContent  = desc + ' · ' + wind + ' km/h';
-    document.getElementById('w-temp').textContent  = temp + '°C';
+    document.getElementById('weatherBar').classList.add('visible');
+    document.getElementById('wx-icon').textContent = icon;
+    document.getElementById('wx-desc').textContent = desc + ' · ' + wind + ' km/h';
+    document.getElementById('wx-temp').textContent = temp + '°C';
+    document.getElementById('wx-alerts').innerHTML = alerts.length
+      ? alerts.map(a => `<span class="wx-badge ${a.clase}">${a.texto}</span>`).join('')
+      : '<span class="wx-ok">✅ Sin alertas meteorológicas</span>';
 
-    const wAlerts = document.getElementById('w-alerts');
-    wAlerts.innerHTML = alerts.length
-      ? alerts.map(a => `<span class="w-alert ${a.clase}">${a.texto}</span>`).join('')
-      : '<span style="color:rgba(255,255,255,0.4);font-size:13px">✅ Sin alertas meteorológicas</span>';
-
-    // Widget del modal
     document.getElementById('mw-temp').textContent = temp + '°C';
     document.getElementById('mw-desc').textContent = icon + ' ' + desc + ' · ' + wind + ' km/h';
-    const mwAlerts = document.getElementById('mw-alerts');
-    mwAlerts.innerHTML = alerts.length
-      ? alerts.map(a => `<div class="ww-alert-item ${a.clase}">${a.texto}</div>`).join('')
-      : '<div style="color:rgba(255,255,255,0.4);font-size:12px">✅ Sin alertas ahora</div>';
+    document.getElementById('mw-alerts').innerHTML = alerts.length
+      ? alerts.map(a => `<div class="ww-badge ${a.clase}">${a.texto}</div>`).join('')
+      : '<div style="font-size:12px;color:rgba(255,255,255,0.35)">✅ Sin alertas</div>';
 
-    // Añadir marcadores automáticos al mapa si está activo
-    if (mapaInicializado && modalMap) {
-      añadirMarcadoresClima(alerts);
-    } else {
-      window._pendingClimaAlerts = alerts;
-    }
-
-  } catch(e) {
-    console.warn('Error cargando tiempo:', e);
-  }
+    window._alertasClima = alerts;
+    if (mapaListo && modalMap) añadirMarcadoresClima(alerts);
+  } catch(e) { console.warn('Error tiempo:', e); }
 }
 
-var climaYaAnadido = false;
-function añadirMarcadoresClima(alerts) {
-  if (climaYaAnadido || !alerts.length) return;
-  climaYaAnadido = true;
-  const centros = [
-    [41.6523, -4.7245], [41.6560, -4.7100], [41.6400, -4.7300],
-    [41.6650, -4.7400], [41.6300, -4.7100]
-  ];
-  const climaIcon = L.divIcon({
-    className: '',
-    html: '<div style="width:16px;height:16px;border-radius:50%;background:#f59e0b;border:2px solid #d97706;box-shadow:0 0 0 4px rgba(245,158,11,0.3)"></div>',
-    iconSize: [16,16], iconAnchor: [8,8]
-  });
-  alerts.forEach(function(a, i) {
-    var pos = centros[i % centros.length];
-    L.marker([pos[0] + (Math.random()-0.5)*0.01, pos[1] + (Math.random()-0.5)*0.01], { icon: climaIcon })
-      .addTo(modalMap)
-      .bindPopup('<strong>' + a.texto + '</strong><br><em>Alerta automática por tiempo</em>');
-  });
-}
-
-// Cargar tiempo al iniciar
 cargarTiempo();
-// Actualizar cada 10 minutos
 setInterval(cargarTiempo, 10 * 60 * 1000);
 
-// Patch: añadir marcadores clima cuando se abre el mapa por primera vez
-var _origIniciarMapa = iniciarMapa;
-iniciarMapa = function() {
-  _origIniciarMapa();
-  if (window._pendingClimaAlerts) {
-    setTimeout(function() { añadirMarcadoresClima(window._pendingClimaAlerts); }, 300);
-  }
-};
 </script>
-
 </body>
 </html>
+
 
