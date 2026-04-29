@@ -591,65 +591,20 @@
 
   .benefit p { font-size: 14px; color: var(--muted); margin: 0; }
 
-  .report-form {
+ .gform-wrap {
     background: var(--black);
     border: 1px solid #1f1f1f;
     border-radius: 16px;
-    padding: 36px;
+    overflow: hidden;
   }
 
-  .form-group { margin-bottom: 20px; }
-
-  .form-group label {
+  .gform-wrap iframe {
     display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: #888;
-    margin-bottom: 8px;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
     width: 100%;
-    background: var(--dark2);
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    padding: 11px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    appearance: none;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--green);
-  }
-
-  .form-group textarea { resize: vertical; min-height: 90px; }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-  .form-submit {
-    width: 100%;
-    background: var(--green);
-    color: var(--black);
     border: none;
-    padding: 13px;
-    border-radius: 8px;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 4px;
+    min-height: 900px;
+    color-scheme: light;
   }
-
-  .form-submit:hover { background: var(--green-dark); }
 
  /* ANIMATIONS */
   @keyframes fadeUp {
@@ -720,7 +675,7 @@
       <div class="stat-label">más riesgo sin datos</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">0</div>
+      <div class="stat-label"> gran</div>
       <div class="stat-label">coste para el ciclista</div>
     </div>
   </div>
@@ -847,40 +802,12 @@
         <p>Recibes notificaciones cuando hay mejoras en tu zona.</p>
       </div>
     </div>
-    <div class="report-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Tipo de incidente</label>
-          <select>
-            <option value="">Selecciona...</option>
-            <option>Accidente con vehículo</option>
-            <option>Caída por estado del firme</option>
-            <option>Punto de riesgo</option>
-            <option>Infracción de tráfico</option>
-            <option>Otro</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Fecha del incidente</label>
-          <input type="date">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Ubicación</label>
-        <input type="text" placeholder="Calle, intersección o referencia...">
-      </div>
-      <div class="form-group">
-        <label>Ciudad</label>
-        <input type="text" placeholder="Tu ciudad...">
-      </div>
-      <div class="form-group">
-        <label>Descripción del incidente</label>
-        <textarea placeholder="Describe brevemente lo que ocurrió..."></textarea>
-      </div>
-      <button class="form-submit" onclick="this.textContent='¡Reporte enviado! Gracias'; this.style.background='#16A34A'">Enviar reporte</button>
+   <div class="gform-wrap">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeW_XeskioccoIyqXDhyP-51GU5ehOler4V_dwZAG0swQ_oAA/viewform?embedded=true" title="Formulario de reporte BikePulse" loading="lazy">Cargando formulario…</iframe>
     </div>
   </div>
 </section>
+    
 <!-- CTA -->
 <section class="cta-section">
   <div class="fade-in">
