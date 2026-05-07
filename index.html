@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
     --green: #22C55E;
     --green-dark: #16A34A;
@@ -24,7 +25,8 @@
   }
 
   html { scroll-behavior: smooth; }
- body {
+
+  body {
     font-family: 'DM Sans', sans-serif;
     background: var(--black);
     color: var(--white);
@@ -32,7 +34,7 @@
     overflow-x: hidden;
   }
 
-   /* NAV */
+  /* NAV */
   nav {
     position: sticky;
     top: 0;
@@ -103,8 +105,8 @@
     transition: background 0.2s !important;
   }
 
-  .nav-cta:hover { background: var(--green-dark) !important; color: var(--white) !important; } 
-  
+  .nav-cta:hover { background: var(--green-dark) !important; color: var(--white) !important; }
+
   /* HERO */
   .hero {
     min-height: 92vh;
@@ -247,9 +249,8 @@
     height: 1px;
     background: linear-gradient(to right, transparent, #1f1f1f 30%, #1f1f1f 70%, transparent);
   }
-}
 
-/* PROBLEM SECTION */
+  /* PROBLEM SECTION */
   .section { padding: 100px 5%; }
 
   .section-label {
@@ -395,7 +396,8 @@
   }
 
   .step p { font-size: 14px; color: var(--muted); line-height: 1.6; }
- /* FEATURES */
+
+  /* FEATURES */
   .features-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -435,7 +437,8 @@
   }
 
   .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
- /* CTA SECTION */
+
+  /* CTA SECTION */
   .cta-section {
     padding: 120px 5%;
     text-align: center;
@@ -547,7 +550,8 @@
   }
 
   .social-links a:hover { border-color: var(--green); color: var(--green); }
- /* REPORT FORM */
+
+  /* REPORT FORM */
   /* ── REPORT SECTION HERO ── */
   .report-hero {
     padding: 100px 5% 60px;
@@ -886,9 +890,7 @@
   .mform-step { display: none; }
   .mform-step.active { display: block; }
 
-  }
-
- /* ANIMATIONS */
+  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -957,7 +959,7 @@
       <div class="stat-label">más riesgo sin datos</div>
     </div>
     <div class="stat-item">
-      <div class="stat-label"> gran</div>
+      <div class="stat-num">0</div>
       <div class="stat-label">coste para el ciclista</div>
     </div>
   </div>
@@ -1060,6 +1062,7 @@
     </div>
   </div>
 </section>
+
 <!-- REPORT FORM -->
 <!-- REPORT HERO -->
 <section class="report-hero" id="reportar">
@@ -1266,6 +1269,7 @@
       <h4>Privacidad y datos</h4>
       <p>BikePulse no almacena tu IP ni datos personales identificativos. El email es opcional y solo se usa para avisarte si hay mejoras en la zona reportada. Los datos agregados se comparten con municipios y organismos de seguridad vial bajo licencia abierta.</p>
     </div>
+
   </div>
 </section>
 
@@ -1273,9 +1277,9 @@
 <section class="cta-section">
   <div class="fade-in">
     <h2>Porque cada ruta<br>debería ser <span class="accent">segura.</span></h2>
-    <p>Únete al cambio. Únete a BikePulse.</p>
+    <p>Súbete al cambio. Súbete a BikePulse.</p>
     <a href="#reportar" class="btn-primary" style="margin: 0 auto; display: inline-flex;">
-      Empieza ahora.
+      Empieza ahora — es gratis
     </a>
   </div>
 </section>
@@ -1326,8 +1330,8 @@
   <div class="footer-bottom">
     <p>© 2026 BikePulse. Todos los derechos reservados.</p>
     <div class="social-links">
-      <a href="#" title="Instagram">https://www.instagram.com/rmebikes/</a>
-      <a href="#" title="Twitter/X">https://x.com/rm_ebikes</a>
+      <a href="#" title="Instagram">ig</a>
+      <a href="#" title="Twitter/X">𝕏</a>
       <a href="#" title="LinkedIn">in</a>
     </div>
   </div>
@@ -1342,7 +1346,10 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.1 });
- // ── Option card selection ──
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── Option card selection ──
 document.addEventListener('click', function(e) {
   const card = e.target.closest('.option-card');
   if (!card) return;
@@ -1420,4 +1427,3 @@ function resetForm() {
 </script>
 </body>
 </html>
-
