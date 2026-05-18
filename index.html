@@ -479,76 +479,87 @@
   }
  
 /* TEAM */
-.team {
-  background: var(--dark);
-  border-top: 1px solid #1f1f1f;
-  padding: 100px 5%;
-}
-
-.team-subtitle {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--green);
-  margin-bottom: 16px;
-}
-
-.team h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(28px, 4vw, 46px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 16px;
-}
-
-.team-description {
-  font-size: 16px;
-  color: var(--muted);
-  max-width: 620px;
-  line-height: 1.7;
-  margin-bottom: 60px;
-}
-
-.team-container {
+<style>
+/* ── Grid de 3 columnas, colapsa a 1 en móvil ── */
+.team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 2.5rem;
 }
 
+/* ── Tarjeta ── */
 .team-card {
-  background: var(--dark2);
-  border: 1px solid #1f1f1f;
-  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;          /* igual que el resto del sitio */
   overflow: hidden;
-  transition: transform 0.2s, border-color 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .team-card:hover {
   transform: translateY(-4px);
-  border-color: #2f2f2f;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
 }
 
-.team-card img {
+/* ── Imagen cuadrada / recortada ── */
+.team-card__image-wrapper {
   width: 100%;
-  height: 220px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.team-card__image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
+  font-family: inherit;        /* fallback alt-text con la fuente del sitio */
 }
 
-.team-card h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
+/* ── Cuerpo de texto ── */
+.team-card__body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+/* ── Etiqueta (mismo estilo que los labels de otras secciones) ── */
+.team-card__label {
+  font-size: 0.75rem;
   font-weight: 700;
-  padding: 24px 24px 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #16a34a;              /* Verde BikePulse — ajusta al color exacto de tu marca */
 }
 
-.team-card p {
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.7;
-  padding: 0 24px 24px;
+/* ── Párrafo ── */
+.team-card__text {
+  margin: 0;
+  font-size: 0.9375rem;        /* 15px — mismo tamaño body del sitio */
+  line-height: 1.6;
+  color: #374151;
 }
+
+/* ── Dark mode (si tu sitio lo soporta) ── */
+@media (prefers-color-scheme: dark) {
+  .team-card {
+    background: #1f2937;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .team-card__image-wrapper {
+    background: #374151;
+  }
+  .team-card__text {
+    color: #d1d5db;
+  }
+}
+</style>
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
@@ -1368,7 +1379,7 @@
 </section>
  
 <!-- NOSOTROS -->
-<section class="team" id="quienes">
+<section id="quienes">
 
   <div class="fade-in">
     <p class="team-subtitle">EL EQUIPO</p>
@@ -1382,56 +1393,67 @@
 
     <div class="team-container">
 
-      <!-- CARD 1 -->
-      <div class="team-card">
-        <img src="assets/rm-ebikes.png" alt="RM e-bikes">
+  <div class="team-grid">
 
-        <h3>Empresa</h3>
-
-        <p>
-          Fundadores de RM e-bikes en 2014.
-          Pioneros en movilidad eléctrica y micromovilidad urbana.
-        </p>
-      </div>
-
-      <!-- CARD 2 -->
-      <div class="team-card">
-        <img src="assets/proyecto.jpg" alt="Proyecto de movilidad">
-
-        <h3>Proyectos</h3>
-
-        <p>
-          Desarrollo de soluciones de ciclologística y movilidad sostenible
-          aplicadas a ciudades como Valladolid.
-        </p>
-      </div>
-
-      <!-- CARD 3 -->
-      <div class="team-card">
-        <img src="assets/persona.jpg" alt="Responsable Biki Valladolid">
-
-        <h3>Experiencia urbana</h3>
-
-        <p>
-          Experiencia en gestión de sistemas públicos de bicicleta
-          y seguridad ciclista urbana.
-        </p>
-      </div>
-
+  <!-- Tarjeta 1: Empresa -->
+  <div class="team-card">
+    <div class="team-card__image-wrapper">
+      <img
+        src="assets/rm-ebikes.png"
+        alt="RM e-bikes — empresa fundada en 2014"
+        class="team-card__image"
+        loading="lazy"
+      />
+    </div>
+    <div class="team-card__body">
+      <span class="team-card__label">Empresa</span>
+      <p class="team-card__text">
+        Fundadores de RM e-bikes en 2014.
+        Pioneros en movilidad eléctrica y micromovilidad urbana.
+      </p>
     </div>
   </div>
 
-</section>
-<!-- CTA -->
-<section class="cta-section">
-  <div class="fade-in">
-    <h2>Porque cada ruta<br>debería ser <span class="accent">segura.</span></h2>
-    <p>Súbete al cambio. Súbete a BikePulse.</p>
-    <a href="#reportar" class="btn-primary" style="margin: 0 auto; display: inline-flex;">
-      Empieza ahora — es gratis
-    </a>
+  <!-- Tarjeta 2: Proyectos -->
+  <div class="team-card">
+    <div class="team-card__image-wrapper">
+      <img
+        src="assets/proyecto.jpg"
+        alt="Proyecto de movilidad sostenible"
+        class="team-card__image"
+        loading="lazy"
+      />
+    </div>
+    <div class="team-card__body">
+      <span class="team-card__label">Proyectos</span>
+      <p class="team-card__text">
+        Desarrollo de soluciones de ciclologística y movilidad sostenible
+        aplicadas a ciudades como Valladolid.
+      </p>
+    </div>
   </div>
-</section>
+
+  <!-- Tarjeta 3: Experiencia urbana -->
+  <div class="team-card">
+    <div class="team-card__image-wrapper">
+      <img
+        src="assets/persona.jpg"
+        alt="Responsable Biki Valladolid — experiencia urbana"
+        class="team-card__image"
+        loading="lazy"
+      />
+    </div>
+    <div class="team-card__body">
+      <span class="team-card__label">Experiencia urbana</span>
+      <p class="team-card__text">
+        Experiencia en gestión de sistemas públicos de bicicleta
+        y seguridad ciclista urbana.
+      </p>
+    </div>
+  </div>
+
+</div>
+
 
 <!-- FOOTER -->
 <footer>
