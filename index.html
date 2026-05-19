@@ -503,67 +503,92 @@
 }
 
 .team-description {
-  font-size: 8px;
+  font-size: 14px;
   color: var(--muted);
-  max-width: 210px;
+  max-width: 400px; /* Ampliado para mejor lectura */
   line-height: 1.7;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
+/* CONTENEDOR: Ahora soporta tarjetas más anchas y rectangulares */
 .team-container {
   display: grid;
-  /* Subí el mínimo a 120px para que coincida con el max-width de tu tarjeta */
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Mínimo 280px para dar espacio horizontal */
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* TARJETA: Se eliminó el límite de 120px para que pueda expandirse horizontalmente */
 .team-card {
   background: var(--dark2);
   border: 1px solid #1f1f1f;
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.2s, border-color 0.2s;
-  max-width: 120px;
+  width: 100%;
+  max-width: 360px; /* Límite perfecto para mantener la proporción rectangular */
   margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--green); /* Efecto de iluminación neón al pasar el cursor */
 }
 
 .team-card:hover img {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
-/* AQUÍ SE CORRIGIÓ EL ERROR: La imagen ahora se adapta al 100% del recuadro */
+/* IMAGEN RECTANGULAR: Modificada para que entre la bicicleta completa */
 .team-card img {
-  width: 100%;                  /* Ocupa todo el ancho de la tarjeta */
-  height: 140px;                /* Altura fija ideal para que se vea bien el rostro */
-  object-fit: cover;            /* Se adapta sin deformarse */
+  width: 100%;
+  height: 200px;                /* Altura fija combinada con el ancho crea el rectángulo perfecto */
+  object-fit: cover;            /* Mantiene la escena llenando el recuadro sin deformar */
   object-position: center;
   display: block;
   filter: grayscale(10%);
   transition: transform 0.4s ease;
+  border-bottom: 1px solid #1f1f1f;
 }
 
-/* Ajuste de tipografía para que no rompa la tarjeta pequeña */
+/* Alternativa si prefieres forzar la proporción por código moderno:
+.team-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+*/
+
+/* CONTENIDO DE TEXTO EN LA TARJETA */
 .team-card h3 {
   font-family: 'Syne', sans-serif;
-  font-size: 14px;              /* Bajado de 20px a 14px para que quepa */
-  font-weight: 600;
-  padding: 12px 12px 4px;       /* Padding más compacto */
+  font-size: 20px;             /* Restaurado a 20px ya que ahora el recuadro es amplio */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding: 20px 20px 4px;
   text-align: center;
+  color: #ffffff;
 }
 
 .team-card p {
-  font-size: 11px;              /* Bajado de 14px a 11px */
+  font-size: 14px;             /* Restaurado a 14px */
   color: var(--muted);
-  line-height: 1.4;
-  padding: 0 12px 12px;
+  line-height: 1.5;
+  padding: 0 20px 24px;
   text-align: center;
 }
 
+/* RESPONSIVO: Adaptación limpia para móviles */
 @media (max-width: 768px) {
   .team-container {
-    /* En móviles es mejor usar auto-fill o mantener las columnas pequeñas en lugar de 1fr completo, 
-       ya que tus tarjetas tienen un max-width de 120px y se verían diminutas a la izquierda */
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .team-card img {
+    height: 180px;             /* Ajuste sutil de altura en pantallas pequeñas */
   }
 }
  /* FOOTER */
