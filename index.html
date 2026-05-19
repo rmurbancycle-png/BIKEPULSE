@@ -512,7 +512,8 @@
 
 .team-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  /* Subí el mínimo a 120px para que coincida con el max-width de tu tarjeta */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
   gap: 24px;
 }
 
@@ -522,45 +523,47 @@
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.2s, border-color 0.2s;
-}
-.team-card:hover img {
-  transform: scale(1.03);
-}
-
-.team-card img {
-  transition: transform 0.4s ease;
-}
-}
-.team-card img {
-  width: 80%;
-  height: 80px;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  filter: grayscale(10%);
-}
-.team-card {
   max-width: 120px;
   margin: 0 auto;
 }
 
+.team-card:hover img {
+  transform: scale(1.03);
+}
+
+/* AQUÍ SE CORRIGIÓ EL ERROR: La imagen ahora se adapta al 100% del recuadro */
+.team-card img {
+  width: 100%;                  /* Ocupa todo el ancho de la tarjeta */
+  height: 140px;                /* Altura fija ideal para que se vea bien el rostro */
+  object-fit: cover;            /* Se adapta sin deformarse */
+  object-position: center;
+  display: block;
+  filter: grayscale(10%);
+  transition: transform 0.4s ease;
+}
+
+/* Ajuste de tipografía para que no rompa la tarjeta pequeña */
 .team-card h3 {
   font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  font-weight: 200;
-  padding: 24px 24px 10px;
+  font-size: 14px;              /* Bajado de 20px a 14px para que quepa */
+  font-weight: 600;
+  padding: 12px 12px 4px;       /* Padding más compacto */
+  text-align: center;
 }
 
 .team-card p {
-  font-size: 14px;
+  font-size: 11px;              /* Bajado de 14px a 11px */
   color: var(--muted);
-  line-height: 1.7;
-  padding: 0 12px 20px;
+  line-height: 1.4;
+  padding: 0 12px 12px;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
   .team-container {
-    grid-template-columns: 1fr;
+    /* En móviles es mejor usar auto-fill o mantener las columnas pequeñas en lugar de 1fr completo, 
+       ya que tus tarjetas tienen un max-width de 120px y se verían diminutas a la izquierda */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 }
  /* FOOTER */
