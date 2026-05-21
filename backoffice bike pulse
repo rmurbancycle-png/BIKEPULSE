@@ -206,57 +206,45 @@
       </div>
     </section>
 
-    <!-- TABLA DE INCIDENTES (CROWDSOURCING & BIKI VALLADOLID LOGS) -->
-    <section class="data-section">
-      <h3>Validación de Alertas Comunitarias</h3>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tipo de Riesgo</th>
-            <th>Ubicación (Valladolid)</th>
-            <th>Puntos Pulso</th>
-            <th>Estado Algoritmo</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>#0982</td>
-            <td><span class="badge danger">Bache Profundo</span></td>
-            <td>Av. Salamanca (Frente a las Cortes)</td>
-            <td style="color: var(--neon-green);">+15 pts</td>
-            <td><span class="badge success">Validado (Zona Roja)</span></td>
-            <td><button class="btn-action" onclick="alert('Exportando coordenadas SIG para técnicos de movilidad.')">Sincronizar B2G</button></td>
-          </tr>
-          <tr>
-            <td>#0981</td>
-            <td><span class="badge warning">Falta Iluminación</span></td>
-            <td>Paseo Juan Carlos I (Tramo Final)</td>
-            <td style="color: var(--neon-green);">+10 pts</td>
-            <td><span class="badge warning">Pendiente Triangulación</span></td>
-            <td><button class="btn-action" onclick="alert('Forzando actualización de la ruta en el Modo Guardián.')">Aislar Ruta</button></td>
-          </tr>
-          <tr>
-            <td>#0980</td>
-            <td><span class="badge danger">Punto de Sustos (Casi-Accidente)</span></td>
-            <td>Rotonda Plaza de la Universidad</td>
-            <td style="color: var(--neon-green);">+25 pts</td>
-            <td><span class="badge success">Validado (Zona Roja)</span></td>
-            <td><button class="btn-action" onclick="alert('Enviando telemetría de riesgo a la aseguradora asociada.')">Reportar Aseguradora</button></td>
-          </tr>
-          <tr>
-            <td>#0979</td>
-            <td><span class="badge success">Carril Bici Bloqueado</span></td>
-            <td>Calle Duque de la Victoria (Carga/Descarga)</td>
-            <td style="color: var(--neon-green);">+10 pts</td>
-            <td><span class="badge success">Resuelto</span></td>
-            <td><button class="btn-action" onclick="alert('Historial archivado.')">Archivar</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+   <!-- REEMPLAZA EL TBODY Y AÑADE EL SCRIPT EN TU BACKOFFICE.HTML -->
+<tbody id="tablaContenido">
+  <!-- Aquí se cargarán los datos dinámicamente -->
+</tbody>
 
-</body>
-</html>
+<script>
+  function cargarIncidentes() {
+    const tabla = document.getElementById('tablaContenido');
+    // Leer los datos del simulador
+    let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
+    
+    // Si no hay ninguno reportado por el usuario, dejamos unos por defecto para Valladolid
+    if(listaIncidentes.length === 0) {
+      listaIncidentes = [
+        {id: '#0982', tipo: 'Bache Profundo', ubicacion: 'Av. Salamanca (Frente a las Cortes)', puntos: '+15 pts', estado: 'Validado (Zona Roja)'},
+        {id: '#0980', tipo: 'Punto de Sustos', ubicacion: 'Rotonda Plaza de la Universidad', puntos: '+25 pts', estado: 'Validado (Zona Roja)'}
+      ];
+    }
+
+    // Limpiar tabla y rellenar
+    tabla.innerHTML = '';
+    listaIncidentes.forEach(incidente => {
+      // Configurar color del badge según el tipo
+      let badgeClass = incidente.tipo.includes('Bache') || incidente.tipo.includes('Sustos') ? 'danger' : 'warning';
+      if(incidente.estado === 'Validado (Zona Roja)') badgeClass = 'danger';
+      
+      tabla.innerHTML += `
+        <tr>
+          <td>${incidente.id}</td>
+          <td><span class="badge ${badgeClass}">${incidente.tipo}</span></td>
+          <td>${incidente.ubicacion}</td>
+          <td style="color: var(--neon-green);">${incidente.puntos}</td>
+          <td><span class="badge ${incidente.estado.includes('Validado') ? 'danger' : 'warning'}">${incidente.estado}</span></td>
+          <td><button class="btn-action" onclick="alert('Sincronizando telemetría de Valladolid...')">Sincronizar</button></td>
+        </tr>
+      `;
+    });
+  }
+
+  // Ejecutar la carga al abrir la página
+  window.onload = cargarIncidentes;
+</script>
