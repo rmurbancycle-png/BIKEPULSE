@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BikePulse — BackOffice Control Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --dark-bg: #060608;
+      --panel-bg: #0d0d12;
+      --border-color: #1f1f29;
+      --neon-green: #00ff66;
+      --neon-cyan: #00e5ff;
+      --neon-red: #ff3366;
+      --text-main: #ffffff;
+      --text-muted: #8e8e9a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar de Navegación */
+    .sidebar {
+      width: 260px;
+      background-color: var(--panel-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 40px;
+      letter-spacing: -0.03em;
+    }
+
+    .sidebar-menu { list-style: none; }
+    .sidebar-item {
+      padding: 14px 16px;
+      border-radius: 10px;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .sidebar-item:hover, .sidebar-item.active {
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--neon-cyan);
+    }
+
+    /* Contenedor Principal */
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .header-dashboard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+    }
+
+    .header-dashboard h1 { font-family: 'Syne', sans-serif; font-size: 28px; }
+
+    /* Tarjetas de Métricas Macro (KPIs) */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .kpi-card {
+      background-color: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .kpi-title { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-value { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; margin-top: 10px; }
+    .kpi-value.green { color: var(--neon-green); }
+    .kpi-value.cyan { color: var(--neon-cyan); }
+
+    /* Tabla de Incidentes Reportados (Crowdsourcing) */
+    .data-section {
+      background-color: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .data-section h3 { font-family: 'Syne', sans-serif; margin-bottom: 20px; font-size: 20px; }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .data-table th {
+      padding: 14px;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .data-table td {
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+
+    /* Badges de Estado */
+    .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge.danger { background: rgba(255, 51, 102, 0.1); color: var(--neon-red); border: 1px solid rgba(255, 51, 102, 0.2); }
+    .badge.warning { background: rgba(255, 230, 0, 0.1); color: #ffe600; border: 1px solid rgba(255, 230, 0, 0.2); }
+    .badge.success { background: rgba(0, 255, 102, 0.1); color: var(--neon-green); border: 1px solid rgba(0, 255, 102, 0.2); }
+
+    /* Botón de Acción simulado */
+    .btn-action {
+      background: none;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+    .btn-action:hover { background: var(--neon-cyan); color: var(--dark-bg); }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">BIKEPULSE // HQ</div>
+    <ul class="sidebar-menu">
+      <li class="sidebar-item active">📊 Panel General</li>
+      <li class="sidebar-item">🛡️ Auditoría Insurtech</li>
+      <li class="sidebar-item">📍 Puntos Críticos (Valladolid)</li>
+      <li class="sidebar-item">👥 Gestión Usuarios Premium</li>
+      <li class="sidebar-item">⚙️ Configuración API</li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+    <div class="header-dashboard">
+      <div>
+        <h1>Consola de Control de Datos</h1>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Monitorización activa de la red vial de Valladolid</p>
+      </div>
+      <div style="font-size: 14px; color: var(--neon-cyan); font-weight: 600; background: rgba(0, 229, 255, 0.05); padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(0, 229, 255, 0.15);">
+        Fase: BETA PILOTO
+      </div>
+    </div>
+
+    <!-- PANEL DE METRICAS (KPIs) -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Safe-Score Medio Ciudad</div>
+        <div class="kpi-value green">84.2 <span style="font-size: 16px; color: var(--text-muted);">/100</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Usuarios Activos Semanales</div>
+        <div class="kpi-value">1,240</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Pólizas Premium Activas (Viaje)</div>
+        <div class="kpi-value cyan">389</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Siniestralidad Mitigada</div>
+        <div class="kpi-value" style="color: var(--neon-red);">-31%</div>
+      </div>
+    </section>
+
+    <!-- TABLA DE INCIDENTES (CROWDSOURCING & BIKI VALLADOLID LOGS) -->
+    <section class="data-section">
+      <h3>Validación de Alertas Comunitarias</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tipo de Riesgo</th>
+            <th>Ubicación (Valladolid)</th>
+            <th>Puntos Pulso</th>
+            <th>Estado Algoritmo</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#0982</td>
+            <td><span class="badge danger">Bache Profundo</span></td>
+            <td>Av. Salamanca (Frente a las Cortes)</td>
+            <td style="color: var(--neon-green);">+15 pts</td>
+            <td><span class="badge success">Validado (Zona Roja)</span></td>
+            <td><button class="btn-action" onclick="alert('Exportando coordenadas SIG para técnicos de movilidad.')">Sincronizar B2G</button></td>
+          </tr>
+          <tr>
+            <td>#0981</td>
+            <td><span class="badge warning">Falta Iluminación</span></td>
+            <td>Paseo Juan Carlos I (Tramo Final)</td>
+            <td style="color: var(--neon-green);">+10 pts</td>
+            <td><span class="badge warning">Pendiente Triangulación</span></td>
+            <td><button class="btn-action" onclick="alert('Forzando actualización de la ruta en el Modo Guardián.')">Aislar Ruta</button></td>
+          </tr>
+          <tr>
+            <td>#0980</td>
+            <td><span class="badge danger">Punto de Sustos (Casi-Accidente)</span></td>
+            <td>Rotonda Plaza de la Universidad</td>
+            <td style="color: var(--neon-green);">+25 pts</td>
+            <td><span class="badge success">Validado (Zona Roja)</span></td>
+            <td><button class="btn-action" onclick="alert('Enviando telemetría de riesgo a la aseguradora asociada.')">Reportar Aseguradora</button></td>
+          </tr>
+          <tr>
+            <td>#0979</td>
+            <td><span class="badge success">Carril Bici Bloqueado</span></td>
+            <td>Calle Duque de la Victoria (Carga/Descarga)</td>
+            <td style="color: var(--neon-green);">+10 pts</td>
+            <td><span class="badge success">Resuelto</span></td>
+            <td><button class="btn-action" onclick="alert('Historial archivado.')">Archivar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+</body>
+</html>
