@@ -1222,7 +1222,7 @@
   </div>
 </section>
 
-<!-- REEMPLAZA EL FORMULARIO DE TU INDEX.HTML POR ESTE -->
+<!-- REEMPLAZA EL FORMULARIO DE TU INDEX.HTML POR ESTE CONECTADO DE VERDAD A TU GOOGLE FORM -->
 <form id="incidentForm" style="display: flex; flex-direction: column; gap: 20px;">
   
   <div>
@@ -1254,6 +1254,51 @@
   </p>
 </form>
 
+<!-- SCRIPT DE CONEXIÓN REAL CON TU FORMULARIO -->
+<script>
+  document.getElementById('incidentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const tipo = document.getElementById('tipoIncidente').value;
+    const ubicacion = document.getElementById('ubicacionIncidente').value;
+    const descripcion = document.getElementById('descripcionIncidente').value;
+    const idAleatorio = '#' + Math.floor(1000 + Math.random() * 9000);
+
+    // 1. CONEXIÓN AL BACK-OFFICE LOCAL (Mantiene tu panel al día)
+    const nuevoIncidente = {
+      id: idAleatorio,
+      tipo: tipo,
+      ubicacion: ubicacion,
+      puntos: '+15 pts',
+      estado: 'Pendiente Triangulación'
+    };
+    let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
+    listaIncidentes.unshift(nuevoIncidente);
+    localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
+
+    // 2. CONEXIÓN CON TU GOOGLE FORM REAL (Datos e id mapeados de tu link)
+    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse'; 
+
+    const formData = new FormData();
+    // Entradas obtenidas de tu código fuente de Google
+    formData.append('entry.1227845344', tipo);        // Campo: Tipo de Incidente
+    formData.append('entry.610530752', ubicacion);     // Campo: Ubicación
+    formData.append('entry.1534937746', descripcion);   // Campo: Descripción Táctica
+
+    // Petición de envío nativa a los servidores de Google
+    fetch(googleFormUrl, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    }).then(() => {
+      alert('¡Alerta procesada! Los datos se han enviado a tu Google Sheets y sincronizado en el Back-Office.');
+      document.getElementById('incidentForm').reset();
+    }).catch(error => {
+      alert('Error en el envío, pero los datos se guardaron en tu panel local temporal.');
+      console.error('Error:', error);
+    });
+  });
+</script>
 <!-- ESTE SCRIPT CONECTA EL ENVÍO (Pégalo justo debajo del </form>) -->
 <script>
   document.getElementById('incidentForm').addEventListener('submit', function(e) {
