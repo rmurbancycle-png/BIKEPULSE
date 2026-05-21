@@ -1222,27 +1222,30 @@
   </div>
 </section>
 
-<!-- REEMPLAZA EL FORMULARIO DE TU INDEX.HTML POR ESTE CONECTADO DE VERDAD A TU GOOGLE FORM -->
 <form id="incidentForm" style="display: flex; flex-direction: column; gap: 20px;">
   
   <div>
-    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">1. Tipo de Incidente</label>
+    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">1. ¿Qué ha ocurrido?</label>
     <select id="tipoIncidente" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 15px; outline: none;">
-      <option value="Bache Profundo">Asfalto / Bache peligroso</option>
-      <option value="Falta Iluminación">Falta de iluminación nocturna</option>
-      <option value="Carril Bici Bloqueado">Carril bici bloqueado / Obstáculo</option>
-      <option value="Punto de Sustos">Punto de "Susto" (Casi-accidente)</option>
+      <option value="ACCIDENTE">ACCIDENTE</option>
+      <option value="CASI ACCIDENTE">CASI ACCIDENTE</option>
+      <option value="PELIGRO EN LA VÍA">PELIGRO EN LA VÍA</option>
+      <option value="COMPORTAMIENTO PELIGROSO">COMPORTAMIENTO PELIGROSO</option>
     </select>
   </div>
 
   <div>
-    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">2. Ubicación / Coordenadas</label>
-    <input type="text" id="ubicacionIncidente" placeholder="Ej. Cruce Av. Salamanca con Huerta del Rey" required style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 15px; outline: none;">
-  </div>
-
-  <div>
-    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">3. Descripción Táctica</label>
-    <textarea id="descripcionIncidente" rows="3" placeholder="Detalla brevemente el riesgo para el algoritmo..." required style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 15px; resize: none; outline: none;"></textarea>
+    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">2. ¿En qué municipio se encuentra?</label>
+    <select id="municipioIncidente" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 15px; outline: none;">
+      <option value="VALLADOLID">VALLADOLID</option>
+      <option value="ARROYO DE LA ENCOMIENDA">ARROYO DE LA ENCOMIENDA</option>
+      <option value="LA CISTÉRNIGA">LA CISTÉRNIGA</option>
+      <option value="LAGUNA DE DUERO">LAGUNA DE DUERO</option>
+      <option value="PUENTE-DUERO">PUENTE-DUERO</option>
+      <option value="SANTOVENIA DE PISUERGA">SANTOVENIA DE PISUERGA</option>
+      <option value="SIMANCAS">SIMANCAS</option>
+      <option value="ZARATÁN">ZARATÁN</option>
+    </select>
   </div>
 
   <button type="submit" style="background: linear-gradient(135deg, #00ff66, #00e5ff); color: #0a0a0c; border: none; padding: 16px; border-radius: 30px; font-family: inherit; font-weight: 600; font-size: 16px; cursor: pointer; transition: transform 0.2s; margin-top: 10px;">
@@ -1250,9 +1253,51 @@
   </button>
   
   <p style="text-align: center; color: #00ff66; font-size: 12px; margin: 0; font-weight: 600;">
-    ⚡ Al reportar, tu Safe-Score de usuario se mantiene activo y protegido.
+    ⚡ Nota: No debes rellenarlo en marcha. Debe estar detenido y en un lugar seguro.
   </p>
 </form>
+
+<script>
+  document.getElementById('incidentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const tipo = document.getElementById('tipoIncidente').value;
+    const municipio = document.getElementById('municipioIncidente').value;
+    const idAleatorio = '#' + Math.floor(1000 + Math.random() * 9000);
+
+    // 1. SINCRONIZACIÓN CON TU PANEL BACK-OFFICE LOCAL
+    const nuevoIncidente = {
+      id: idAleatorio,
+      tipo: tipo,
+      ubicacion: municipio, // Usamos el municipio como ubicación en la tabla
+      puntos: '+15 pts',
+      estado: 'Pendiente Triangulación'
+    };
+    let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
+    listaIncidentes.unshift(nuevoIncidente);
+    localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
+
+    // 2. ENVÍO REAL A TU GOOGLE FORM (Usando tus IDs de entry internos)
+    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse'; 
+
+    const formData = new FormData();
+    // Mapeo directo a los campos de tus capturas de pantalla
+    formData.append('entry.1227845344', tipo);         // Modifica el valor del tipo de incidente
+    formData.append('entry.610530752', municipio);     // Modifica el valor del municipio seleccionado
+
+    fetch(googleFormUrl, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    }).then(() => {
+      alert('¡Sincronización completada con éxito! Tu reporte se ha guardado en el Google Sheets de BikePulse.');
+      document.getElementById('incidentForm').reset();
+    }).catch(error => {
+      alert('Error en el envío automático, guardado temporalmente en local.');
+      console.error('Error:', error);
+    });
+  });
+</script>
 
 <!-- SCRIPT DE CONEXIÓN REAL CON TU FORMULARIO -->
 <script>
