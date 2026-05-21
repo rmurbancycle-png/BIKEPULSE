@@ -1222,30 +1222,120 @@
   </div>
 </section>
 
-<form id="incidentForm" style="display: flex; flex-direction: column; gap: 20px;">
+<form id="incidentForm" style="display: flex; flex-direction: column; gap: 24px; max-width: 650px; margin: 0 auto;">
   
-  <div>
-    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">1. ¿Qué ha ocurrido?</label>
-    <select id="tipoIncidente" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 15px; outline: none;">
-      <option value="ACCIDENTE">ACCIDENTE</option>
-      <option value="CASI ACCIDENTE">CASI ACCIDENTE</option>
-      <option value="PELIGRO EN LA VÍA">PELIGRO EN LA VÍA</option>
-      <option value="COMPORTAMIENTO PELIGROSO">COMPORTAMIENTO PELIGROSO</option>
-    </select>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">¿Qué ha ocurrido?</label>
+      <select id="tipoIncidente" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+        <option value="ACCIDENTE">ACCIDENTE</option>
+        <option value="CASI ACCIDENTE">CASI ACCIDENTE</option>
+        <option value="PELIGRO EN LA VÍA">PELIGRO EN LA VÍA</option>
+        <option value="COMPORTAMIENTO PELIGROSO">COMPORTAMIENTO PELIGROSO</option>
+      </select>
+    </div>
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Municipio</label>
+      <select id="municipioIncidente" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+        <option value="VALLADOLID">VALLADOLID</option>
+        <option value="ARROYO DE LA ENCOMIENDA">ARROYO DE LA ENCOMIENDA</option>
+        <option value="LA CISTÉRNIGA">LA CISTÉRNIGA</option>
+        <option value="LAGUNA DE DUERO">LAGUNA DE DUERO</option>
+        <option value="PUENTE-DUERO">PUENTE-DUERO</option>
+        <option value="SANTOVENIA DE PISUERGA">SANTOVENIA DE PISUERGA</option>
+        <option value="SIMANCAS">SIMANCAS</option>
+        <option value="ZARATÁN">ZARATÁN</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Enlace de Google Maps</label>
+      <input type="text" id="linkMaps" placeholder="Mantén pulsado el punto y pega el enlace..." required style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+    </div>
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Indica la Fecha</label>
+      <input type="date" id="fechaIncidente" required style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none; color-scheme: dark;">
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">¿Hubo Lesiones?</label>
+      <select id="lesiones" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+        <option value="NO">NO</option>
+        <option value="LEVES">LEVES</option>
+        <option value="GRAVES">GRAVES</option>
+      </select>
+    </div>
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Tipo de Vía</label>
+      <select id="tipoVia" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+        <option value="CARRIL-BICI SEGREGADO">CARRIL-BICI SEGREGADO</option>
+        <option value="CARRIL-BICI COMPARTIDO">CARRIL-BICI COMPARTIDO</option>
+        <option value="CALZADA COMPARTIDA">CALZADA COMPARTIDA</option>
+        <option value="INTERSECCIÓN">INTERSECCIÓN</option>
+        <option value="ROTONDA">ROTONDA</option>
+        <option value="TRAMO RECTO SIN INFRAESTRUCTURA CICLISTA">TRAMO RECTO SIN INFRAESTRUCTURA CICLISTA</option>
+      </select>
+    </div>
   </div>
 
   <div>
-    <label style="display: block; color: #8e8e9a; font-size: 13px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">2. ¿En qué municipio se encuentra?</label>
-    <select id="municipioIncidente" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 15px; outline: none;">
-      <option value="VALLADOLID">VALLADOLID</option>
-      <option value="ARROYO DE LA ENCOMIENDA">ARROYO DE LA ENCOMIENDA</option>
-      <option value="LA CISTÉRNIGA">LA CISTÉRNIGA</option>
-      <option value="LAGUNA DE DUERO">LAGUNA DE DUERO</option>
-      <option value="PUENTE-DUERO">PUENTE-DUERO</option>
-      <option value="SANTOVENIA DE PISUERGA">SANTOVENIA DE PISUERGA</option>
-      <option value="SIMANCAS">SIMANCAS</option>
-      <option value="ZARATÁN">ZARATÁN</option>
+    <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Tipo de Riesgo Detectado</label>
+    <select id="tipoRiesgo" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+      <option value="CRUCE PELIGROSO">CRUCE PELIGROSO</option>
+      <option value="BACHE/ PAVIMENTO MAL">BACHE/ PAVIMENTO MAL</option>
+      <option value="TRAFICO AGRESIVO">TRAFICO AGRESIVO</option>
+      <option value="VISIBILIDAD REDUCIDA">VISIBILIDAD REDUCIDA</option>
+      <option value="OBRA/ OBSTACULO">OBRA/ OBSTACULO</option>
+      <option value="ACCIDENTE">ACCIDENTE</option>
     </select>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Visibilidad</label>
+      <select id="visibilidad" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 13px; outline: none;">
+        <option value="BUENA">BUENA</option>
+        <option value="BAJA">BAJA</option>
+      </select>
+    </div>
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Meteorología</label>
+      <select id="clima" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 13px; outline: none;">
+        <option value="FAVORABLES">FAVORABLES</option>
+        <option value="DESFAVORABLES">DESFAVORABLES</option>
+      </select>
+    </div>
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Tráfico</label>
+      <select id="trafico" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 13px; outline: none;">
+        <option value="FLUIDO">FLUIDO</option>
+        <option value="DENSO">DENSO</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">¿Se podría haber evitado?</label>
+      <select id="evitable" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+        <option value="SÍ">SÍ</option>
+        <option value="NO">NO</option>
+        <option value="NO LO SÉ">NO LO SÉ</option>
+      </select>
+    </div>
+    <div>
+      <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">¿Qué lo habría evitado?</label>
+      <input type="text" id="solucionEvitar" placeholder="Ej. Más iluminación, Separadores..." style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
+    </div>
+  </div>
+
+  <div>
+    <label style="display: block; color: #8e8e9a; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Tu Email (Opcional)</label>
+    <input type="email" id="emailUsuario" placeholder="nombre@correo.com" style="width: 100%; background: #0a0a0c; border: 1px solid #1f1f26; color: #ffffff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; outline: none;">
   </div>
 
   <button type="submit" style="background: linear-gradient(135deg, #00ff66, #00e5ff); color: #0a0a0c; border: none; padding: 16px; border-radius: 30px; font-family: inherit; font-weight: 600; font-size: 16px; cursor: pointer; transition: transform 0.2s; margin-top: 10px;">
@@ -1253,7 +1343,7 @@
   </button>
   
   <p style="text-align: center; color: #00ff66; font-size: 12px; margin: 0; font-weight: 600;">
-    ⚡ Nota: No debes rellenarlo en marcha. Debe estar detenido y en un lugar seguro.
+    🚴‍♂️ Gracias por tu reporte, nos ayuda a identificar zonas peligrosas y prevenir accidentes. Cada incidente cuenta.
   </p>
 </form>
 
@@ -1261,112 +1351,67 @@
   document.getElementById('incidentForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
+    // Extracción limpia de todas las variables nuevas
     const tipo = document.getElementById('tipoIncidente').value;
     const municipio = document.getElementById('municipioIncidente').value;
+    const linkMaps = document.getElementById('linkMaps').value;
+    const fecha = document.getElementById('fechaIncidente').value;
+    const lesiones = document.getElementById('lesiones').value;
+    const tipoVia = document.getElementById('tipoVia').value;
+    const tipoRiesgo = document.getElementById('tipoRiesgo').value;
+    const visibilidad = document.getElementById('visibilidad').value;
+    const clima = document.getElementById('clima').value;
+    const trafico = document.getElementById('trafico').value;
+    const evitable = document.getElementById('evitable').value;
+    const solucion = document.getElementById('solucionEvitar').value || 'No especificado';
+    const email = document.getElementById('emailUsuario').value || 'Anónimo';
+    
     const idAleatorio = '#' + Math.floor(1000 + Math.random() * 9000);
 
-    // 1. SINCRONIZACIÓN CON TU PANEL BACK-OFFICE LOCAL
+    // 1. ACTUALIZACIÓN DEL PANEL BACK-OFFICE LOCAL (Fusión de datos tácticos para tu otra pestaña)
     const nuevoIncidente = {
       id: idAleatorio,
-      tipo: tipo,
-      ubicacion: municipio, // Usamos el municipio como ubicación en la tabla
-      puntos: '+15 pts',
-      estado: 'Pendiente Triangulación'
+      tipo: `${tipo} (${tipoRiesgo})`,
+      ubicacion: `${municipio} - Maps Link`,
+      puntos: '+25 pts',
+      estado: 'Pendiente Análisis Metropolitano'
     };
     let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
     listaIncidentes.unshift(nuevoIncidente);
     localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
 
-    // 2. ENVÍO REAL A TU GOOGLE FORM (Usando tus IDs de entry internos)
+    // 2. TRANSMISIÓN INTEGRAL A TU GOOGLE FORM RECONSTRUIDO
     const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse'; 
 
     const formData = new FormData();
-    // Mapeo directo a los campos de tus capturas de pantalla
-    formData.append('entry.1227845344', tipo);         // Modifica el valor del tipo de incidente
-    formData.append('entry.610530752', municipio);     // Modifica el valor del municipio seleccionado
+    // NOTA: He mantenido tus IDs de entrada base mapeados. Asegúrate de que las nuevas preguntas se vinculen correspondientemente.
+    formData.append('entry.1227845344', tipo);          // Pregunta: ¿Qué ha ocurrido?
+    formData.append('entry.610530752', municipio);      // Pregunta: ¿En qué municipio se encuentra?
+    
+    // Campos añadidos de telemetría de tus capturas
+    formData.append('entry.ubicacion_maps_placeholder', linkMaps); 
+    formData.append('entry.fecha_placeholder', fecha);
+    formData.append('entry.lesiones_placeholder', lesiones);
+    formData.append('entry.tipo_via_placeholder', tipoVia);
+    formData.append('entry.tipo_riesgo_placeholder', tipoRiesgo);
+    formData.append('entry.visibilidad_placeholder', visibilidad);
+    formData.append('entry.clima_placeholder', clima);
+    formData.append('entry.trafico_placeholder', trafico);
+    formData.append('entry.evitable_placeholder', evitable);
+    formData.append('entry.solucion_placeholder', solucion);
+    formData.append('entry.email_placeholder', email);
 
     fetch(googleFormUrl, {
       method: 'POST',
       body: formData,
       mode: 'no-cors'
     }).then(() => {
-      alert('¡Sincronización completada con éxito! Tu reporte se ha guardado en el Google Sheets de BikePulse.');
+      alert('¡Análisis completado! Tu reporte metropolitano se ha guardado en tu base de datos central de Google y se ha mapeado en el Back-Office.');
       document.getElementById('incidentForm').reset();
     }).catch(error => {
-      alert('Error en el envío automático, guardado temporalmente en local.');
+      alert('Error en el envío global, pero guardado en la consola local.');
       console.error('Error:', error);
     });
-  });
-</script>
-
-<!-- SCRIPT DE CONEXIÓN REAL CON TU FORMULARIO -->
-<script>
-  document.getElementById('incidentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const tipo = document.getElementById('tipoIncidente').value;
-    const ubicacion = document.getElementById('ubicacionIncidente').value;
-    const descripcion = document.getElementById('descripcionIncidente').value;
-    const idAleatorio = '#' + Math.floor(1000 + Math.random() * 9000);
-
-    // 1. CONEXIÓN AL BACK-OFFICE LOCAL (Mantiene tu panel al día)
-    const nuevoIncidente = {
-      id: idAleatorio,
-      tipo: tipo,
-      ubicacion: ubicacion,
-      puntos: '+15 pts',
-      estado: 'Pendiente Triangulación'
-    };
-    let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
-    listaIncidentes.unshift(nuevoIncidente);
-    localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
-
-    // 2. CONEXIÓN CON TU GOOGLE FORM REAL (Datos e id mapeados de tu link)
-    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse'; 
-
-    const formData = new FormData();
-    // Entradas obtenidas de tu código fuente de Google
-    formData.append('entry.1227845344', tipo);        // Campo: Tipo de Incidente
-    formData.append('entry.610530752', ubicacion);     // Campo: Ubicación
-    formData.append('entry.1534937746', descripcion);   // Campo: Descripción Táctica
-
-    // Petición de envío nativa a los servidores de Google
-    fetch(googleFormUrl, {
-      method: 'POST',
-      body: formData,
-      mode: 'no-cors'
-    }).then(() => {
-      alert('¡Alerta procesada! Los datos se han enviado a tu Google Sheets y sincronizado en el Back-Office.');
-      document.getElementById('incidentForm').reset();
-    }).catch(error => {
-      alert('Error en el envío, pero los datos se guardaron en tu panel local temporal.');
-      console.error('Error:', error);
-    });
-  });
-</script>
-<!-- ESTE SCRIPT CONECTA EL ENVÍO (Pégalo justo debajo del </form>) -->
-<script>
-  document.getElementById('incidentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // 1. Recoger los datos del formulario
-    const nuevoIncidente = {
-      id: '#' + Math.floor(1000 + Math.random() * 9000),
-      tipo: document.getElementById('tipoIncidente').value,
-      ubicacion: document.getElementById('ubicacionIncidente').value,
-      puntos: '+15 pts',
-      estado: 'Pendiente Triangulación'
-    };
-
-    // 2. Obtener los incidentes que ya existan o crear una lista vacía
-    let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
-    
-    // 3. Añadir el nuevo a la lista y guardarlo en el navegador
-    listaIncidentes.unshift(nuevoIncidente);
-    localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
-
-    alert('¡Alerta enviada con éxito! Tus datos se han transmitido al Back-Office simulado.');
-    this.reset();
   });
 </script>
  
