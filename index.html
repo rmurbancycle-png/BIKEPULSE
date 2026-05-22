@@ -1407,12 +1407,23 @@
     localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
 
     // 2. TRANSMISIÓN INTEGRAL A TU GOOGLE FORM RECONSTRUIDO
-    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse'; 
+   // La URL DEBE terminar en /formResponse
+const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse';
 
    const formData = new FormData();
     
     // 1. Campos verificados con tu captura de pantalla:
-    formData.append('entry.807060758', tipo);          // ¿Qué ha ocurrido? (Confirmado por tu foto)
+  const formData = new FormData();
+
+// 1. ESTA LÍNEA YA ES TUYA REAL (Gracias a tu captura de pantalla)
+formData.append('entry.807060758', tipo); // ¿Qué ha ocurrido?
+
+// 2. BUSCA E INDICA ESTE NÚMERO (Es obligatorio, si dejas el texto en mayúsculas fallará todo)
+formData.append('entry.PON_AQUÍ_EL_NÚMERO_DE_MUNICIPIO', municipio); 
+
+// 3. Los campos opcionales o los demás puedes ir cambiándolos poco a poco:
+formData.append('entry.PON_AQUÍ_EL_NÚMERO_DE_MAPS', linkMaps);
+// ... resto de campos ...
 
     // 2. Campos que debes rellenar inspeccionando las siguientes preguntas con el mismo truco:
     formData.append('entry.NUMERO_DE_MUNICIPIO', municipio);      // ¿En qué municipio se encuentra?
