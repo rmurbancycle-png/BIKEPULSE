@@ -1409,23 +1409,24 @@
     // 2. TRANSMISIÓN INTEGRAL A TU GOOGLE FORM RECONSTRUIDO
     const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse'; 
 
-    const formData = new FormData();
-    formData.append('entry.1227845344', tipo);          // ¿Qué ha ocurrido?
-    formData.append('entry.610530752', municipio);      // ¿En qué municipio se encuentra?
+   const formData = new FormData();
     
-    // RECUERDA: Cambia estos textos por tus números de entry reales del nuevo formulario
-    formData.append('entry.ubicacion_maps_placeholder', linkMaps); 
-    formData.append('entry.fecha_placeholder', fecha);
-    formData.append('entry.lesiones_placeholder', lesiones);
-    formData.append('entry.tipo_via_placeholder', tipoVia);
-    formData.append('entry.tipo_riesgo_placeholder', tipoRiesgo);
-    formData.append('entry.visibilidad_placeholder', visibilidad);
-    formData.append('entry.clima_placeholder', clima);
-    formData.append('entry.trafico_placeholder', trafico);
-    formData.append('entry.evitable_placeholder', evitable);
-    formData.append('entry.solucion_placeholder', solucion);
-    formData.append('entry.email_placeholder', email);
+    // 1. Campos verificados con tu captura de pantalla:
+    formData.append('entry.807060758', tipo);          // ¿Qué ha ocurrido? (Confirmado por tu foto)
 
+    // 2. Campos que debes rellenar inspeccionando las siguientes preguntas con el mismo truco:
+    formData.append('entry.NUMERO_DE_MUNICIPIO', municipio);      // ¿En qué municipio se encuentra?
+    formData.append('entry.NUMERO_DE_MAPS', linkMaps);            // Ubicación del punto (Enlace Google Maps)
+    formData.append('entry.NUMERO_DE_FECHA', fecha);              // Indica la fecha
+    formData.append('entry.NUMERO_DE_LESIONES', lesiones);        // ¿Hubo lesiones?
+    formData.append('entry.NUMERO_DE_VIA', tipoVia);              // Tipo de vía
+    formData.append('entry.NUMERO_DE_RIESGO', tipoRiesgo);        // Tipo de riesgo
+    formData.append('entry.NUMERO_DE_VISIBILIDAD', visibilidad);  // Visibilidad
+    formData.append('entry.NUMERO_DE_CLIMA', clima);              // Condiciones meteorológicas
+    formData.append('entry.NUMERO_DE_TRAFICO', trafico);          // Condiciones tráfico
+    formData.append('entry.NUMERO_DE_EVITABLE', evitable);        // ¿Se podría haber evitado?
+    formData.append('entry.NUMERO_DE_SOLUCION', solucion);        // ¿Qué lo habría evitado?
+    formData.append('entry.NUMERO_DE_EMAIL', email);              // Email
     fetch(googleFormUrl, {
       method: 'POST',
       body: formData,
