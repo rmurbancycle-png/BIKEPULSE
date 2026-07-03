@@ -1616,27 +1616,33 @@ function submitForm() {
     email: document.getElementById('f-email')?.value || '',
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbzcymxlihJiZVNY8CuBKBlQcpWbJKwnUGXhwUcJ9NeZ_rkm00Iocn3ZJkohNUcePBuz/exec', {
-    method: 'POST',
-    mode: 'no-cors', // Apps Script no devuelve cabeceras CORS, así que no podemos leer la respuesta
-    headers: { 'Content-Type': 'text/plain' }, // evita el preflight de CORS
-    body: JSON.stringify(data)
-  })
-  .then(() => {
-    // Con no-cors no podemos saber si hubo error real,
-    // así que asumimos éxito tras el fetch (igual que con Google Forms)
+  // Simulate async submit (replace with real API call)
+  setTimeout(() => {
     document.getElementById(`step-${currentStep}`).classList.remove('active');
     document.getElementById(`step-nav-${currentStep}`).classList.remove('active');
     document.getElementById(`step-nav-${currentStep}`).classList.add('done');
     const success = document.getElementById('step-success');
     success.style.display = 'flex';
     document.querySelector('.mform-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  })
-  .catch(() => {
-    btn.textContent = 'Error de red, reintentar →';
-    btn.disabled = false;
-  });
+  }, 800);
 }
+
+ 
+function resetForm() {
+  document.getElementById('step-success').style.display = 'none';
+  currentStep = 1;
+  for (let i = 1; i <= totalSteps; i++) {
+    const step = document.getElementById(`step-${i}`);
+    const nav = document.getElementById(`step-nav-${i}`);
+    step.classList.remove('active');
+    nav.classList.remove('active', 'done');
+  }
+  document.getElementById('step-1').classList.add('active');
+  document.getElementById('step-nav-1').classList.add('active');
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.mform-input').forEach(i => i.value = '');
+  const btn = document.getElementById('submit-btn');
+  if (btn) { btn.textContent = 'Enviar reporte →'; btn.disabled = false; }
 }
 </script>
 </body>
