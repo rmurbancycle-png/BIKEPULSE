@@ -1374,44 +1374,8 @@
   </form>
 </div>
 
-<script>
-  document.getElementById('incidentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const tipo = document.getElementById('tipoIncidente').value;
-    const municipio = document.getElementById('municipioIncidente').value;
-    const linkMaps = document.getElementById('linkMaps').value;
-    const fecha = document.getElementById('fechaIncidente').value;
-    const lesiones = document.getElementById('lesiones').value;
-    const tipoVia = document.getElementById('tipoVia').value;
-    const tipoRiesgo = document.getElementById('tipoRiesgo').value;
-    const visibilidad = document.getElementById('visibilidad').value;
-    const clima = document.getElementById('clima').value;
-    const trafico = document.getElementById('trafico').value;
-    const evitable = document.getElementById('evitable').value;
-    const solucion = document.getElementById('solucionEvitar').value || 'No especificado';
-    const email = document.getElementById('emailUsuario').value || 'Anónimo';
-    
-    const idAleatorio = '#' + Math.floor(1000 + Math.random() * 9000);
-
-    // 1. SINCRONIZACIÓN CON BACK-OFFICE LOCAL
-    const nuevoIncidente = {
-      id: idAleatorio,
-      tipo: `${tipo} - ${tipoRiesgo}`,
-      ubicacion: `${municipio} (Maps Link)`,
-      puntos: '+25 pts',
-      estado: 'Pendiente Análisis Metropolitano'
-    };
-    let listaIncidentes = JSON.parse(localStorage.getItem('incidentesBikePulse')) || [];
-    listaIncidentes.unshift(nuevoIncidente);
-    localStorage.setItem('incidentesBikePulse', JSON.stringify(listaIncidentes));
-
-    // 2. TRANSMISIÓN INTEGRAL A TU GOOGLE FORM RECONSTRUIDO
-   // La URL DEBE terminar en /formResponse
-const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfpvM9O3T0_y74-YhKscHcl-ZasLg992W_z0r9Yd1Z-z8Vj1g/formResponse';
 
    
- 
 <!-- NOSOTROS -->
 <section class="team" id="quienes">
 
