@@ -1616,7 +1616,7 @@ function submitForm() {
     email:      document.getElementById('f-email')?.value   || '',
   });
 
-  const url = 'https://script.google.com/macros/s/AKfycbywni10cO7rTmWzWA6TlQVC7DdJlhuWRePM2rRqeSXjeEncCaoW8o0eNQCmg8y-cduP/exec';
+  const url = 'https://script.google.com/macros/s/AKfycbyRE7LMyemJIZt2ZY_ktZWpZPMdrqZgYAHLyv-2ty685fr2gSXx1-K5T8qjLA_GtQ-N/exec';
 
   fetch(`${url}?${params.toString()}`, {
     method: 'GET',
@@ -1635,6 +1635,7 @@ function submitForm() {
     btn.disabled = false;
   });
 }
+
 function resetForm() {
   document.getElementById('step-success').style.display = 'none';
   currentStep = 1;
