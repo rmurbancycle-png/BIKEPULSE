@@ -1541,8 +1541,8 @@ function submitForm() {
     email:      document.getElementById('f-email')?.value   || '',
   });
 
-  const url = 'https://script.google.com/macros/s/AKfycbxhKf4Myjo0tawH2MBMn6cEBU4KyUI3BO-4oTkY9rIvqfb7-PBlMGy7uCEsP8-15asV/exec';
-
+ const url = 'https://script.google.com/macros/s/AKfycbxoXT8F3dndfTwbZtGb6Ukppg5_HA8Bq0OAPTM-ncfn6Fi5mpPjHBsDcEHtvnGFqzA/exec';
+ 
   fetch(`${url}?${params.toString()}`, {
     method: 'GET',
     mode: 'no-cors'
